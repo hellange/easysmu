@@ -26,7 +26,6 @@
 #include "Stats.h"
 #include "digit_util.h"
 
-
 #include "Arduino.h"
 #include "LT_I2C.h"
 #include "Wire.h"
