@@ -23,7 +23,6 @@
 #include "colors.h"
 #include "volt_display.h"
 #include "current_display.h"
-//#include "Dac.h"
 #include "Stats.h"
 #include "digit_util.h"
 
@@ -345,68 +344,7 @@ void renderGraph(int x,int y) {
 
 }
 
-/*
-void renderVoltageTrend() {
-//  TODO make flexible....
 
-    int x = 613;
-    int y = 26;
-    
-    //GD.ColorA(255);
-    GD.ColorRGB(255,255,255);
-
-    int v, mV, uV;
-    bool neg;
-
-//    Serial.print("minimum: ");  
-//    Serial.print(V_STATS.visibleMin, 3);
-//    Serial.print(", maximum: ");  
-//    Serial.print(V_STATS.visibleMax, 3);
-
-    GD.ColorRGB(200,255,200);
-
-//    DIGIT_UTIL.separate(&v, &mV, &uV, &neg, V_STATS.span);
-//    GD.cmd_text(x, y+10, 26, 0, "Span ");
-//    GD.cmd_number(x+40,y+10, 26, 2, v);
-//    GD.cmd_number(x+60, y+10, 26, 3, mV);
-//    GD.cmd_number(x+90, y+10, 26, 3, uV);
-
-    //DIGIT_UTIL.separate(&v, &mV, &uV, &neg, V_STATS.visibleMax);
-    
-    GD.cmd_text(x, y+29, 26, 0,  "Max:");
-    renderValue(x+25, y+29, V_STATS.visibleMax);
-
-    GD.Begin(LINE_STRIP);
-    GD.LineWidth(10);
-    GD.Vertex2ii(x+7, y+44); 
-    GD.Vertex2ii(x+167, y+44); 
-    
-    V_STATS.renderTrend(x+17, y+49, true);
-
-
-    GD.Begin(RECTS);
-    //GD.ColorA(200); // some transparance
-    GD.ColorRGB(0); 
-    GD.Vertex2ii(x+30, y+60);
-    GD.Vertex2ii(x+140, y+80);
-    //GD.ColorA(255); // No transparent
-    GD.ColorRGB(COLOR_VOLT);
-    //DIGIT_UTIL.separate(&v, &mV, &uV, &neg, V_STATS.span);
-    GD.cmd_text(x+25, y+63, 26, 0, "Span:");
-    renderValue(x+40+25, y+63, V_STATS.span);
-    
-    GD.ColorRGB(200,255,200);
-   
-    GD.Begin(LINE_STRIP);
-    GD.LineWidth(10);
-    GD.Vertex2ii(x+7, y+99); 
-    GD.Vertex2ii(x+167, y+99);
-    
-    DIGIT_UTIL.separate(&v, &mV, &uV, &neg, V_STATS.visibleMin);
-    GD.cmd_text(x, y+102, 26, 0,  "Min:");
-    renderValue(x+25, y+102, V_STATS.visibleMin);
-}
-*/
 void currentPanel(int x, int y) {
   if (x >= 800) {
     return;
@@ -616,46 +554,15 @@ void loop()
       GD.ColorA(0x44);
     }
 
-    
-  
-   
+    // Dont sample voltage and current while scrolling because polling is slow.
+    // TODO: Remove this limitation when sampling is based on interrupts.
+    if (scrollDir == 0) {
+      float rawMv = SMU[0].MeasureVoltage() * 1000.0;
+      V_STATS.addSample(rawMv);
 
-
-
-
-   #ifdef ADS1220
-    // change SPI mode for other spi devices ! Needed because the gd2 lib uses spi
-    SPI.setDataMode(SPI_MODE1);
-    if(DAC.checkDataAvilable() == true) {
-      float Vout = DAC.convertToMv();
-     
-      Serial.print("Vout in mV : ");  
-      Serial.println(Vout, 3);
-
-      DACVout = Vout;
-      
-      avgVout = DAC.smoothing(avgVout, smoothingSamples, Vout);
-      //Serial.print("AvgOut in mV : ");  
-      //Serial.println(avgVout, 3);
-      //DACVout = avgVout;
-
-      V_STATS.addSample(DACVout);
-
+      // TODO: Store somewhere for analysis, just as voltage
+      rawMa_glob = SMU[0].MeasureCurrent() * 1000.0;
     }
-   #else
-     // Dont sample voltage and current while scrolling because polling is slow.
-     // TODO: Remove this limitation when sampling is based on interrupts.
-     if (scrollDir == 0) {
-       float rawMv = SMU[0].MeasureVoltage() * 1000.0;
-       V_STATS.addSample(rawMv);
-
-       // TODO: Store somewhere for analysis, just as voltage
-       rawMa_glob = SMU[0].MeasureCurrent() * 1000.0;
-     }
-
-
-   #endif
-
 
     renderDisplay();
 
@@ -664,7 +571,6 @@ void loop()
       DIAL.handleKeypadDialog();
     }
 
-    
     GD.swap();    
     GD.__end();
   }
