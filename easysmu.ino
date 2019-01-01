@@ -3,6 +3,10 @@
  *  Initial GUI prototype for
  *  P O O R  M A N ' s  S M U
  *  
+ *  This version (https://github.com/hellange/easysmu) is imported from poor-mans-smu to have a stable UI prototype 
+ *  that works with the EasySMU board (DC2591A)
+ *  Further development of the UI prototype will mainly be done in https://github.com/hellange/poor-mans-smu.git
+ *  
  *  by Helge Langehaug (2018, 2019)
  *  
  *  
