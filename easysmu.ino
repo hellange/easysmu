@@ -581,6 +581,7 @@ void closeCallback(int vol_cur_type, bool cancel) {
      Serial.print("SET type:");
      Serial.println(vol_cur_type);
      Serial.println(DIAL.type() );
+     Serial.println(DIAL.getMv());
     if (cancel) {
       return;
     }
