@@ -7,13 +7,13 @@ It can also be run without DC2561 by commenting out the #define EASYSMU line in 
 
 References:
 
-https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2591a.html
+EasySMU board https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/dc2591a.html
 
-https://poormanssmu.wordpress.com/2018/09/19/easysmu/
+Quick test of the EasySMU board: https://poormanssmu.wordpress.com/2018/09/19/easysmu/
 
-http://www.hotmcu.com/5-graphical-lcd-capacitive-touch-screen-800x480-spi-ft811-p-301.html?cPath=6_16
+5" display: http://www.hotmcu.com/5-graphical-lcd-capacitive-touch-screen-800x480-spi-ft811-p-301.html?cPath=6_16
 
-https://weatherhelge.wordpress.com/2018/02/06/5-800x480-capacitive-touch-lcd-with-built-in-ft811-graphics-controller/
+One of my tests of the 5" display: https://weatherhelge.wordpress.com/2018/02/06/5-800x480-capacitive-touch-lcd-with-built-in-ft811-graphics-controller/
 
 
 
